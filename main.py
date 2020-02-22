@@ -1,68 +1,85 @@
 '''
-Maximum Subset Sum With No Adjacent Elements
-input: [75, 105, 120, 75, 90, 135]
-output: 330 ( 75 , 120 , 135)
+Given a non-empty array of integers, every element appears twice except for one. Find that single one.
 
-1) 75 + 120 + 90
-2) 75 + 75 + 135
-3) 105 + 75 + 135
+Example 1:
+Input: [2,2,1]
+Output: 1
 
-[75, 105, 120, 75, 90, 40]
-max(75 + 120 , 105)
-
-[75, 105, 195, 195, 285, max(40 + 195, 285) ]
-
-[75, 105, 195, 195, 90 + 195(285), 135 + 195 = 330]
+Example 2:
+Input: [4,1,2,1,2]
+Output: 4
 '''
-def maxSubsetSumNoAdjacent(array):
-  max = 0
 
-  for i in range(len(array)):
-    if array[i] > max:
-      max = array[i]
-    sum = helper(array, max, i)
-  
-  return max
+'''
+[4,1,2,1,2]
+0  1 2 3 4
 
-def helper(array, max, idx):
-  idx2 = idx + 2
-  for i in range(idx2, len(array)-1):
-      sum = array[idx] + array[idx2]
-      if sum > max:
-        max = sum
-      helper(array, max, idx2)
+InterviewPrep
+    Easy 
+        SumOfThree 
+          sumofthree.py
+        BinHeap 
+          binheap.py
+    Medium
+    Hard
+'''
+
+def findSingleNum(array):
+  num_map = {}
+
+  for value in array:
+    if value not in num_map:
+      num_map[value] = 1
+    else:
+      num_map[value] += 1
+
+  smallest = float("inf")
+  for key,value in num_map.items():
+    if value == 1:
+      smallest = key
+      
+  return smallest
+
+# Approach 3: Bit Manipulation
+def single_number(integers):
+    result = 0
+    for integer in integers:
+        result = result ^ integer
+    return result
+
+nums = [2,2,1,1,1,4,4,3,55,55]
+print(findSingleNum(nums))
+
+'''
+Approach 1: use another data structure to hold the numbers you have found.
+Time complexity (if you use another array) may be up to O(n^2). If you use a hash table, you may be able to get up to O(n). 
+Space complexity is O(n), which is not constant space.
+
+Approach 2: use math and Set
+Time complexity: likely O(n), as O(n + n) is really just O(n). The number of steps grows linearly.
+Space complexity: O(n), as the addition will require the whole list to be duplicated.
+
+Approach 3: Bit Manipulation
+Time complexity: O(n)
+Space complexity: O(1)
+You'll have to look up this approach on your own - what kind of bitwise operations are there? What happens when you use them? 
+The solution for this particular problem is easily found on google, so try looking up the Bitwise Operations in Python to try to work through it.
+'''
 
 
-def maxSubsetSumNoAdjacent2(array):
-
-  if len(array) == 0:
-    return 0
-  elif len(array) == 1:
-    return array[0]
-  else:
-    max_sums = array[:]
-    max_sums[1] = max_sums[0] if max_sums[0] > max_sums[1] else max_sums[1]
-
-    
-    for index in range(2, len(max_sums)): 
-      max_sums[index] = max(max_sums[index - 1], max_sums[index - 2] + max_sums[index])
-    return max_sums[-1]
+'''
+I am designing a media player that should store songs and play them in
+random order. I need to be able to insert, delete, and play a random song.
+What data structure would you use?
+'''
 
 
-​def maxSubsetSumNoAdjacent(array):
-    if not len(array):
-        return 0
-    elif len(array) == 1:
-        return array[0]
-    second = array[0]
-    first = max(array[0], array[1])
-    for i in range(2, len(array)):
-        current = max(first, second + array[i])
-        second = first
-        first = current
-    return first
+https://www.rapidtables.com/tools/notepad.html
 
-nums = [75, 105, 120, 75, 90, 135]
-#                  ^  ^   i
+https://www.pacificcitizen.org/
 
-print(maxSubsetSumNoAdjacent2(nums)) # 330
+
+http://mashdata-staging.khoalify.com/
+
+
+http://archive.li/yEIJT
